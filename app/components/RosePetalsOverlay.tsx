@@ -16,10 +16,16 @@ type Petal = {
   delay: number;
   drift: number;
   opacity: number;
-  color: string;
+  rotateStart: number;
+  gradientFrom: string;
+  gradientTo: string;
 };
 
-const COLORS = ['#AD3A5B', '#D98FA6'];
+const PALETTES = [
+  { from: '#F6D3DE', to: '#AD3A5B' }, // وردي فاتح → وردي غامق
+  { from: '#FBE6EC', to: '#C65478' }, // وردي فاتح جدًا → وردي متوسط
+  { from: '#EFC0CE', to: '#7E2740' }, // وردي مزهر → وردي عميق
+];
 
 /**
  * يغلّف مجموعة أقسام، ويضيف طبقة تساقط ورد خفيفة (ثابتة على الشاشة)
@@ -38,30 +44,29 @@ export default function RosePetalsOverlay({
   const [petals, setPetals] = useState<Petal[]>([]);
 
   useEffect(() => {
-    const generated = Array.from({ length: PETAL_COUNT }).map((_, i) => ({
-      id: i,
-      left: rand(2, 96),
-      size: rand(18, 34),
-      duration: rand(12, 22),
-      delay: rand(-20, 0),
-      drift: rand(-60, 60),
-      opacity: rand(0.45, 0.75),
-      color: COLORS[i % COLORS.length],
-    }));
+    const generated = Array.from({ length: PETAL_COUNT }).map((_, i) => {
+      const palette = PALETTES[i % PALETTES.length];
+      return {
+        id: i,
+        left: rand(2, 96),
+        size: rand(20, 38),
+        duration: rand(12, 22),
+        delay: rand(-20, 0),
+        drift: rand(-60, 60),
+        opacity: rand(0.5, 0.8),
+        rotateStart: rand(0, 360),
+        gradientFrom: palette.from,
+        gradientTo: palette.to,
+      };
+    });
     setPetals(generated);
-    // eslint-disable-next-line no-console
-    console.log('[RosePetalsOverlay] generated petals:', generated.length);
   }, []);
 
   useEffect(() => {
     const el = wrapperRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      ([entry]) => {
-        setVisible(entry.isIntersecting);
-        // eslint-disable-next-line no-console
-        console.log('[RosePetalsOverlay] visible:', entry.isIntersecting);
-      },
+      ([entry]) => setVisible(entry.isIntersecting),
       { threshold: 0 }
     );
     io.observe(el);
@@ -92,15 +97,40 @@ export default function RosePetalsOverlay({
               left: `${p.left}%`,
               top: '-6%',
               width: p.size,
-              height: p.size * 0.8,
+              height: p.size * 1.15,
               opacity: p.opacity,
-              backgroundColor: p.color,
-              borderRadius: '60% 40% 60% 40%',
-              boxShadow: '0 2px 6px rgba(122,30,60,0.35)',
+              filter: 'drop-shadow(0 2px 4px rgba(122,30,60,0.3))',
               animation: `petal-fall ${p.duration}s linear ${p.delay}s infinite`,
               ['--drift' as any]: `${p.drift}px`,
+              ['--rotate-start' as any]: `${p.rotateStart}deg`,
             }}
-          />
+          >
+            <svg
+              viewBox="0 0 24 28"
+              width="100%"
+              height="100%"
+              style={{ display: 'block' }}
+            >
+              <defs>
+                <radialGradient id={`petal-grad-${p.id}`} cx="35%" cy="25%" r="75%">
+                  <stop offset="0%" stopColor={p.gradientFrom} />
+                  <stop offset="100%" stopColor={p.gradientTo} />
+                </radialGradient>
+              </defs>
+              {/* شكل بتلة: مدببة من فوق، تتّسع وتستدير من تحت — زي بتلة ورد حقيقية */}
+              <path
+                d="M12 1C7.5 5 3 11 3 17c0 6 4 10 9 10s9-4 9-10c0-6-4.5-12-9-16z"
+                fill={`url(#petal-grad-${p.id})`}
+              />
+              {/* خط عرق خفيف بمنتصف البتلة */}
+              <path
+                d="M12 4C12 4 12 20 12 25"
+                stroke="rgba(255,255,255,0.35)"
+                strokeWidth="0.6"
+                fill="none"
+              />
+            </svg>
+          </span>
         ))}
       </div>
     </div>
