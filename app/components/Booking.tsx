@@ -10,7 +10,7 @@ export default function Booking() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <section id="booking" className="bg-ink text-white py-28">
+    <section id="booking" className="bg-ink text-white py-28 relative z-10">
       <div className="max-w-[1180px] mx-auto px-7">
         <div className="max-w-xl mb-14">
           <span className="inline-flex items-center gap-2 text-[13px] font-bold text-[#F3C4CF] bg-white/10 border border-white/25 px-4 py-1.5 rounded-full mb-4">
@@ -81,6 +81,9 @@ export default function Booking() {
           >
             إرسال طلب الحجز
           </button>
+          <p className="text-[12.5px] text-white/50 text-center mt-4">
+            هذا موقع تجريبي وهمي لغرض العرض التصميمي فقط — لا يتم إرسال أي بيانات فعليًا.
+          </p>
         </form>
       </div>
     </section>

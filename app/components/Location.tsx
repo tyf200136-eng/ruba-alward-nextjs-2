@@ -2,7 +2,7 @@ import ScrollFillHeading from './ScrollFillHeading';
 
 export default function Location() {
   return (
-    <section id="location" className="bg-bgSoft py-28">
+    <section id="location" className="bg-bgSoft/60 py-28 relative z-10">
       <div className="max-w-[1180px] mx-auto px-7">
         <div className="max-w-xl mb-14">
           <span className="inline-flex items-center gap-2 text-[13px] font-bold text-roseDeep bg-roseSofter border border-roseSoft px-4 py-1.5 rounded-full mb-4">

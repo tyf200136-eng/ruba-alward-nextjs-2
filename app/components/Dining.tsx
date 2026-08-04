@@ -31,6 +31,8 @@ const ITEMS = [
   },
 ];
 
+
+
 const SLIDE_DURATION = 4000; // مدة كل عنصر بالمللي ثانية
 
 export default function Dining() {
@@ -57,7 +59,7 @@ export default function Dining() {
   }, [active]);
 
   return (
-    <section id="dining" className="py-28">
+    <section id="dining" className="py-28 relative z-10">
       <div className="max-w-[1180px] mx-auto px-7">
         <div className="grid grid-cols-1 md:grid-cols-[1.1fr_.9fr] gap-14 items-center">
           {/* الصورة — تتغيّر مع العنصر النشط */}

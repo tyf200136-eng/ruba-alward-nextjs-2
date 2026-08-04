@@ -3,11 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import ScrollFillHeading from './ScrollFillHeading';
-import PetalsBackground from './RosePetalsOverlay';
 
 const ROOMS = [
   {
-    tag: 'الأكثر حجزًا',
+    
     img: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=900&q=80&auto=format&fit=crop',
     title: 'غرفة ديلوكس — إطلالة الورد',
     desc: 'غرفة واسعة بشرفة خاصة تطل مباشرة على حديقة الورد الداخلية، بفراش فندقي فاخر وإضاءة دافئة.',
@@ -15,7 +14,7 @@ const ROOMS = [
     price: 750,
   },
   {
-    tag: null,
+    
     img: 'https://images.unsplash.com/photo-1564078516393-cf04bd966897?w=900&q=80&auto=format&fit=crop',
     title: 'جناح الشفا العائلي',
     desc: 'جناح بغرفتي نوم وصالة مستقلة، مثالي للعائلات، مع منطقة جلوس تطل على جبال الشفا الضبابية.',
@@ -23,7 +22,7 @@ const ROOMS = [
     price: 980,
   },
   {
-    tag: 'فاخر',
+    
     img: 'https://images.unsplash.com/photo-1629140727571-9b5c6f6267b4?w=900&q=80&auto=format&fit=crop',
     title: 'جناح ربى الورد الفاخر',
     desc: 'أكبر أجنحتنا، بمدخل خاص وجاكوزي وإطلالة بانورامية على المزرعة والجبل معًا.',
@@ -221,10 +220,9 @@ export default function Rooms() {
     <section
       id="rooms"
       ref={sectionRef}
-      className="bg-bgSoft relative"
+      className="bg-bgSoft/60 relative z-10"
       style={{ height: isDesktop ? '340vh' : 'auto' }}
     >
-      <PetalsBackground count={24} />
       <div
         className={
           isDesktop

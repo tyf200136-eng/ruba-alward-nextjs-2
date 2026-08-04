@@ -110,7 +110,7 @@ export default function ScrollFrameHero() {
   }, [ready]);
 
   return (
-    <div id="hero-track" ref={containerRef} className="relative h-[300vh]">
+    <div id="hero-track" ref={containerRef} className="relative z-10 h-[300vh]">
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
         <canvas
           ref={canvasRef}
