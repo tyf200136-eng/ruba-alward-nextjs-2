@@ -4,17 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import ScrollFillHeading from './ScrollFillHeading';
 
-type Room = {
-  img: string;
-  title: string;
-  desc: string;
-  amenities: string[];
-  price: number;
-  tag?: string;
-};
-
-const ROOMS: Room[] = [
+const ROOMS = [
   {
+    tag: 'الأكثر حجزًا',
     img: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=900&q=80&auto=format&fit=crop',
     title: 'غرفة ديلوكس — إطلالة الورد',
     desc: 'غرفة واسعة بشرفة خاصة تطل مباشرة على حديقة الورد الداخلية، بفراش فندقي فاخر وإضاءة دافئة.',
@@ -22,6 +14,7 @@ const ROOMS: Room[] = [
     price: 750,
   },
   {
+    tag: null,
     img: 'https://images.unsplash.com/photo-1564078516393-cf04bd966897?w=900&q=80&auto=format&fit=crop',
     title: 'جناح الشفا العائلي',
     desc: 'جناح بغرفتي نوم وصالة مستقلة، مثالي للعائلات، مع منطقة جلوس تطل على جبال الشفا الضبابية.',
@@ -29,6 +22,7 @@ const ROOMS: Room[] = [
     price: 980,
   },
   {
+    tag: 'فاخر',
     img: 'https://images.unsplash.com/photo-1629140727571-9b5c6f6267b4?w=900&q=80&auto=format&fit=crop',
     title: 'جناح ربى الورد الفاخر',
     desc: 'أكبر أجنحتنا، بمدخل خاص وجاكوزي وإطلالة بانورامية على المزرعة والجبل معًا.',
@@ -200,10 +194,23 @@ export default function Rooms() {
     };
 
     measure();
-    const t = setTimeout(measure, 60);
+
+    // إعادة قياس تلقائية أي وقت يتغيّر فيه تخطيط الحاوية (خط يحمّل،
+    // صورة تحمّل، أي تغيّر بالحجم) — بدون الاعتماد على مهلة ثابتة
+    const ro = new ResizeObserver(() => measure());
+    if (containerRef.current) ro.observe(containerRef.current);
+
+    // إعادة قياس فور اكتمال تحميل خطوط الويب (Markazi Text / Tajawal)
+    if (typeof document !== 'undefined' && 'fonts' in document) {
+      (document as any).fonts?.ready?.then(() => measure());
+    }
+
+    window.addEventListener('load', measure);
     window.addEventListener('resize', measure);
+
     return () => {
-      clearTimeout(t);
+      ro.disconnect();
+      window.removeEventListener('load', measure);
       window.removeEventListener('resize', measure);
     };
   }, [isDesktop]);

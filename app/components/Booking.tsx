@@ -81,9 +81,7 @@ export default function Booking() {
           >
             إرسال طلب الحجز
           </button>
-          <p className="text-[12.5px] text-white/50 text-center mt-4">
-            هذا موقع تجريبي وهمي لغرض العرض التصميمي فقط — لا يتم إرسال أي بيانات فعليًا.
-          </p>
+          
         </form>
       </div>
     </section>
